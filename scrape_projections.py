@@ -36,6 +36,7 @@ def fetch_and_save_team_projections(overwrite=False):
         if os.path.exists("/mnt/external"):
             file_path = f"/mnt/external/projections/{csv_file_name}"
         else:
+            print("Volume not mounted at /mnt/external. Saving to the regular project directory instead.")
             # Fallback to the regular project directory if the volume is not mounted
             file_path = f"written_data/{csv_file_name}"
 
