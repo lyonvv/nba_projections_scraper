@@ -24,4 +24,4 @@ jobs:
 
       - name: Deploy code to DigitalOcean
         run: |
-          ssh root@${{ secrets.DROPLET_IP }} "cd ~/home/lyonvv/nba_projections_scraper && git pull origin main"
+          ssh root@${{ secrets.DROPLET_IP }} "cd ~/../home/lyonvv/nba_projections_scraper && git pull origin main"
