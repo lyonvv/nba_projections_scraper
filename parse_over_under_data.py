@@ -14,12 +14,11 @@ def get_over_under_picks():
         # Loop through the rows in the CSV file
         for row in csvreader:
             team = row['Team']
-            owen = row['Owen']
-            will = row['Will']
-            lyon = row['Lyon']
+            name = row['Name']
+            pick = row['Pick']
 
             # Create an OverUnderPick object and append it to the list
-            over_under_pick = OverUnderPick(team, owen, will, lyon)
+            over_under_pick = OverUnderPick(team, name, pick)
             over_under_picks.append(over_under_pick)
 
         return over_under_picks
