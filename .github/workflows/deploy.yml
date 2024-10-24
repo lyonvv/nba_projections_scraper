@@ -27,6 +27,6 @@ jobs:
           ssh root@${{ secrets.DROPLET_IP }} "
             cd ~/../home/lyonvv/nba_projections_scraper &&
             git pull origin main &&
-            source venv/bin/activate &&
+            source env/bin/activate &&
             pip install -r requirements.txt
           "
