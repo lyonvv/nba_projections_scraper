@@ -31,10 +31,10 @@ def fetch_and_save_team_projections(overwrite=False):
 
         # Define the CSV filename
         csv_file_name = f'team_projections_{current_date.strftime("%Y-%m-%d")}.csv'
-        
+
         # Check if the volume is mounted at /mnt/external
         if os.path.exists("/mnt/external"):
-            file_path = f"/mnt/external/{csv_file_name}"
+            file_path = f"/mnt/external/projections/{csv_file_name}"
         else:
             # Fallback to the regular project directory if the volume is not mounted
             file_path = f"written_data/{csv_file_name}"
