@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 from constants import TEAM_FULL_NAMES
 from parse_html import parse_team_projections_from_html
 from parse_over_under_data import get_over_under_picks, get_team_over_unders
-from team_projection import TeamProjection  # Assuming TeamProjection is already defined in team_projection.py
+from team_projection import TeamProjection
+from utils import get_projections_storage_directory  # Assuming TeamProjection is already defined in team_projection.py
 
 def fetch_and_save_team_projections(overwrite=False):
     """
@@ -32,13 +33,11 @@ def fetch_and_save_team_projections(overwrite=False):
         # Define the CSV filename
         csv_file_name = f'team_projections_{current_date.strftime("%Y-%m-%d")}.csv'
 
-        # Check if the volume is mounted at /mnt/external
-        if os.path.exists("/mnt/external"):
-            file_path = f"/mnt/external/projections/{csv_file_name}"
-        else:
-            print("Volume not mounted at /mnt/external. Saving to the regular project directory instead.")
-            # Fallback to the regular project directory if the volume is not mounted
-            file_path = f"written_data/{csv_file_name}"
+        # Get the directory to save the CSV file
+        projections_storage_dir = get_projections_storage_directory()
+
+        # Create the full file path
+        file_path = os.path.join(projections_storage_dir, csv_file_name)
 
         # Parse the HTML and get team projections
         team_projections = parse_team_projections_from_html(response.text, current_date)

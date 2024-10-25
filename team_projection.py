@@ -1,3 +1,11 @@
+class DailyTeamProjection:
+    def __init__(self, date_retrieved, team_projections):
+        self.date_retrieved = date_retrieved
+        self.team_projections = team_projections
+    
+    def __repr__(self):
+        return f"DailyTeamProjection: {self.team_projections}"
+
 class TeamProjection:
     def __init__(self, date_retrieved, team_name, current_w, current_l, proj_w, proj_l, win_div, playoff, top6, playin, proj_seed, proj_draft, first_pick):
         self.date_retrieved = date_retrieved
