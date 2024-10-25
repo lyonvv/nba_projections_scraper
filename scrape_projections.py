@@ -72,6 +72,8 @@ def fetch_and_save_team_projections(overwrite=False):
                     'proj_draft': projection.proj_draft,
                     'first_pick': projection.first_pick
                 })
+
+            print(f"Team projections saved to '{file_path}' at {current_date.strftime('%Y-%m-%d %H:%M:%S')}")
     else:
         print(f"Failed to retrieve the webpage. Status code: {response.status_code}")
 
