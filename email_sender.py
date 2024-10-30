@@ -5,20 +5,30 @@ from email.mime.text import MIMEText
 
 from dotenv import load_dotenv
 
+from render_email import render_email_content
+
 load_dotenv()
 
 def send_email_via_gmail():
     sender_email = "lyon.vanvoorhis@gmail.com"
     receiver_email = "lyon@tonic.ai"
     subject = "Hello from Gmail SMTP!"
-    body = "This is a test email sent using Gmail's SMTP server."
+    body = render_email_content()
+
+    #save body in local file
+
+    with open('email.html', 'w') as f:
+        f.write(body)
+
+
+
 
     # Compose the email
     message = MIMEMultipart()
     message["From"] = sender_email
     message["To"] = receiver_email
     message["Subject"] = subject
-    message.attach(MIMEText(body, "plain"))
+    message.attach(MIMEText(body, "html"))
 
     # Gmail's SMTP server details
     smtp_server = "smtp.gmail.com"

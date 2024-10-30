@@ -23,5 +23,5 @@ class TeamProjection:
         self.first_pick = first_pick  # 1ST PICK%
 
     def __repr__(self):
-        formatted_date = self.date_retrieved.strftime('%Y-%m-%d %H:%M:%S')
+        formatted_date = self.date_retrieved
         return f"{self.team_name} on {formatted_date}: Current W-L={self.current_w}-{self.current_l}, Proj W-L={self.proj_w}-{self.proj_l}, WIN DIV%={self.win_div}, PLAYOFF%={self.playoff}, TOP6%={self.top6}, PLAYIN%={self.playin}, PROJ SEED={self.proj_seed}, PROJ DRAFT={self.proj_draft}, 1ST PICK%={self.first_pick}"

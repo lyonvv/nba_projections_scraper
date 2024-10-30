@@ -14,10 +14,11 @@ def get_all_daily_projections():
     projections_files = []
 
     for file in os.listdir(projections_storage_dir):
-        if file.endswith(".csv") and file.startswith("team_projections_") and len(file) == 30 and file[16:20].isdigit() and file[21:23].isdigit() and file[24:26].isdigit():
+        if file.endswith(".csv") and file.startswith("team_projections_"):
             projections_files.append(file)
 
     daily_projections = []
+
 
     for file in projections_files:
 
@@ -48,7 +49,9 @@ def get_all_daily_projections():
 
             daily_projections.append(DailyTeamProjection(date_retrieved, projections))
 
-    return daily_projections.sort(key=lambda x: x.date_retrieved)
+    daily_projections.sort(key=lambda x: x.date_retrieved)
+
+    return daily_projections
 
 def get_latest_daily_projection():
     all_daily_projections = get_all_daily_projections()
