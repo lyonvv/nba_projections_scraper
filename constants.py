@@ -1,3 +1,5 @@
+from team_color import TeamColor
+
 HAWKS_FULL_NAME = "Atlanta Hawks"
 HAWKS_ABBREVIATION = "ATL"
 CELTICS_FULL_NAME = "Boston Celtics"
@@ -58,7 +60,6 @@ JAZZ_FULL_NAME = "Utah Jazz"
 JAZZ_ABBREVIATION = "UTA"
 WIZARDS_FULL_NAME = "Washington Wizards"
 WIZARDS_ABBREVIATION = "WAS"
-
 
 TEAM_FULL_NAMES = [
     HAWKS_FULL_NAME,

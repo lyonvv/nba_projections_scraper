@@ -3,7 +3,6 @@ import os
 from team_projection import DailyTeamProjection, TeamProjection
 from utils import get_projections_storage_directory
 
-
 def get_all_daily_projections():
     # get all file names from the written_data
 
@@ -18,7 +17,6 @@ def get_all_daily_projections():
             projections_files.append(file)
 
     daily_projections = []
-
 
     for file in projections_files:
 
