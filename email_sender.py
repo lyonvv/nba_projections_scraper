@@ -35,7 +35,7 @@ def send_email_via_gmail(receiver_email, receiver_name, season_start_date, seaso
     subject = "Hello from Gmail SMTP!"
     body = render_email_content(receiver_name, week_number)
 
-    with open('email.html', 'w') as f:
+    with open('email.html', 'w', encoding='utf-8') as f:
         f.write(body)
 
     # save body in local file

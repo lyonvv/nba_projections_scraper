@@ -16,5 +16,17 @@
              {%- elif current_delta | float < 0 -%} rgb( {{ 255 }}, {{ 255 + (current_delta | float * 51) | int }}, {{ 255 + (current_delta | float * 51) | int }} );
              {%- else -%} rgb( {{ 255 - (current_delta | float * 51) | int }}, {{ 255 }}, {{ 255 - (current_delta | float * 51) | int }} );
              {%- endif -%}">{{ current_delta | abs }} {{ tracking }}</td>
+  <td>
+    {% if will_pick == tracking %}✅{% endif %}
+    {{ will_pick }}
+  </td>
+  <td>
+    {% if owen_pick == tracking %}✅{% endif %}
+    {{ owen_pick }}
+  </td>
+  <td>
+    {% if lyon_pick == tracking %}✅{% endif %}
+    {{ lyon_pick }}
+  </td>
 
 </tr>

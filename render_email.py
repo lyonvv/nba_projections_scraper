@@ -2,7 +2,7 @@ from datetime import timedelta
 from jinja2 import Environment, FileSystemLoader
 
 from email_renderers.render_team_row import render_team_rows
-from parse_over_under_data import get_team_over_unders
+from parse_over_under_data import get_over_under_picks, get_team_over_unders
 from projections_utils import get_latest_daily_projection
 
 def render_email_content(receiver_name, week_number):
@@ -15,9 +15,11 @@ def render_email_content(receiver_name, week_number):
 
     latest_projection = get_latest_daily_projection()
 
+    over_under_picks = get_over_under_picks()
+
     print(latest_projection)
 
-    team_rows = render_team_rows(latest_projection.team_projections, initial_team_over_unders)
+    team_rows = render_team_rows(latest_projection.team_projections, initial_team_over_unders, over_under_picks)
 
     #serialize and print latest projection
 

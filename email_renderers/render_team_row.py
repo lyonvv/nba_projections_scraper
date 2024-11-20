@@ -4,7 +4,7 @@ from wand.image import Image
 
 from constants import TEAM_ABBREVIATIONS, TEAM_FULL_NAMES_LOOKUP
 
-def render_team_rows(latest_team_projections, initial_over_unders): 
+def render_team_rows(latest_team_projections, initial_over_unders, over_under_picks): 
     env = Environment(loader=FileSystemLoader('./email_templates/'))
     template = env.get_template('team_row.j2')
 
@@ -18,6 +18,12 @@ def render_team_rows(latest_team_projections, initial_over_unders):
         team_over_under = next((obj for obj in initial_over_unders if obj.team_name == team_full_name), None)
 
         team_over_under_line = team_over_under.over_under_line
+
+        will_pick = next((obj for obj in over_under_picks if obj.team_name.strip() == team_full_name and obj.name == 'Will'), None)
+
+        lyon_pick = next((obj for obj in over_under_picks if obj.team_name.strip() == team_full_name and obj.name == 'Lyon'), None)
+
+        owen_pick = next((obj for obj in over_under_picks if obj.team_name.strip() == team_full_name and obj.name == 'Owen'), None)
 
         projected_wins = team_projection.proj_w
         current_wins = team_projection.current_w
@@ -42,7 +48,10 @@ def render_team_rows(latest_team_projections, initial_over_unders):
             'proj_wins': projected_wins,
             'over_under_line': team_over_under_line,
             'tracking': 'Even' if rounded_current_delta == 0 else 'Under' if rounded_current_delta < 0 else 'Over',
-            'current_delta': rounded_current_delta
+            'current_delta': rounded_current_delta,
+            'will_pick': will_pick.pick,
+            'lyon_pick': lyon_pick.pick,
+            'owen_pick': owen_pick.pick
         }
 
         row = template.render(data)
