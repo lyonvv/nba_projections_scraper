@@ -76,4 +76,4 @@ desktop.ini
 written_data/
 
 
-.env
+*/.env
