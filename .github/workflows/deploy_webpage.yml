@@ -40,10 +40,12 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd website
           npm install
 
       - name: Build and export Next.js app
         run: |
+          cd website
           npm run build
           npm run export  # This creates the static files in the 'out' directory
 
