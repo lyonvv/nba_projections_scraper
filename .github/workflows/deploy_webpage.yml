@@ -41,15 +41,11 @@ jobs:
           cd website
           npm install
 
-      - name: Build and export Next.js app
-        run: |
-          cd website
-          npx vercel build
-
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           cd website
           npx vercel pull --token $VERCEL_TOKEN --yes
+          npx vercel build
           npx vercel --prod --yes --prebuilt --token $VERCEL_TOKEN
