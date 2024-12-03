@@ -33,13 +33,10 @@ jobs:
           # Replace '/path/to/source/files/' with the actual path to your data files on the droplet
           scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/ ./website/data/
 
-          # List copied files to verify (optional)
-          ls -R ./data
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16" # Use the desired Node.js version
+          node-version: "16"
 
       - name: Install dependencies
         run: |
