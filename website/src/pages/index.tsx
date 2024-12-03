@@ -4,6 +4,8 @@ import fs from "fs";
 import { parse } from "csv-parse/sync";
 import { IDailyProjections, IProjectionDataRow } from "@/types/projections";
 import { convertCSVRowsToDailyProjections } from "@/utils/utils";
+import { TeamIcon } from "@/components/teamIcon";
+import { ProjectionsTable } from "@/components/projectionsTable";
 
 export const getStaticProps: GetStaticProps<{
   csvData: IDailyProjections[];
@@ -36,16 +38,23 @@ interface HomeProps {
 }
 
 const Home = ({ csvData }: HomeProps) => {
-  const mostRecentDate =
-    csvData.length > 0
-      ? new Date(csvData[csvData.length - 1].dateRetrieved).toDateString()
-      : null;
+  const latestProjections =
+    csvData.length > 0 ? csvData[csvData.length - 1] : null;
+
+  const mostRecentDate = latestProjections
+    ? new Date(latestProjections?.dateRetrieved).toDateString()
+    : null;
 
   return (
     <div>
       <h1>Welcome to Next.js with the Pages Router</h1>
       <div>{`${csvData.length} days of data collected`}</div>
-      {mostRecentDate && <div>{`Last updated on ${mostRecentDate}`}</div>}
+      {latestProjections && (
+        <>
+          <ProjectionsTable projections={latestProjections} />
+          <div>{`Last updated on ${mostRecentDate}`}</div>
+        </>
+      )}
     </div>
   );
 };

@@ -1,13 +1,10 @@
+import { TeamAbbreviationLookup } from "@/constants";
 import {
   IDailyProjections,
   IProjectionDataRow,
   ISingleTeamDailyProjection,
 } from "@/types/projections";
-import {
-  TeamAbbreviation,
-  TeamAbbreviationLookup,
-  TeamName,
-} from "@/types/teams";
+import { TeamAbbreviation, TeamName } from "@/types/teams";
 
 export const convertCSVRowsToDailyProjections = (
   rows: IProjectionDataRow[]
