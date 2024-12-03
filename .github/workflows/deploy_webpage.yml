@@ -34,7 +34,7 @@ jobs:
           # Replace '/path/to/source/files/' with the actual path to your data files on the droplet
           scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/ ./website/data
 
-          ls ./website/data
+          ls -l ./website/data
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
