@@ -15,9 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install SSH client
-        run: sudo apt-get install openssh-client
-
       - name: Add SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -33,10 +30,30 @@ jobs:
           # Replace '/path/to/source/files/' with the actual path to your data files on the droplet
           scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/ ./website/data/
 
+          ls ./website/data
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Cache Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            website/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('website/package-lock.json', 'website/**/*.js', 'website/**/*.jsx', 'website/**/*.ts', 'website/**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('website/package-lock.json') }}
 
       - name: Install dependencies
         run: |
@@ -47,7 +64,6 @@ jobs:
         run: |
           cd website
           npm run build
-          npm run export  # This creates the static files in the 'out' directory
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
