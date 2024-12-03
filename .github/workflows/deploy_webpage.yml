@@ -28,7 +28,7 @@ jobs:
 
           # Use SCP to securely copy files from the droplet
           # Replace '/path/to/source/files/' with the actual path to your data files on the droplet
-          scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/ ./website/data/
+          scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/ ./website/data
 
           ls ./website/data
 
