@@ -2,9 +2,13 @@ import path from "path";
 import fs from "fs";
 import { parse } from "csv-parse/sync";
 import { IDailyProjections, IProjectionDataRow } from "@/types/projections";
-import { convertCSVRowsToDailyProjections } from "@/utils/utils";
+import {
+  convertCSVRowsToDailyProjections,
+  getCurrentStandings,
+} from "@/utils/utils";
 import { ProjectionsTable } from "@/components/projectionsTable";
 import { GetStaticProps } from "next";
+import { CurrentStandings } from "@/components/currentStandings";
 
 export const getStaticProps: GetStaticProps<{
   csvData: IDailyProjections[];
@@ -45,14 +49,30 @@ const Home = ({ csvData }: HomeProps) => {
     : null;
 
   return (
-    <div>
-      <h1>Welcome to Next.js with the Pages Router</h1>
-      <div>{`${csvData.length} days of data collected`}</div>
+    <div className="flex flex-col items-center justify-center w-full space-y-8 p-6">
+      <h1 className="text-4xl font-bold text-gray-800 tracking-wide">
+        2024 NBA Pick Em
+      </h1>
       {latestProjections && (
-        <>
+        <div className="space-y-6">
+          <CurrentStandings
+            standings={getCurrentStandings(latestProjections)}
+          />
           <ProjectionsTable projections={latestProjections} />
-          <div>{`Last updated on ${mostRecentDate}`}</div>
-        </>
+          <div>
+            <div className="text-gray-500">
+              {"Projection data from "}
+              <a
+                className="text-blue-500 underline"
+                href={"https://www.espn.com/nba/bpi/_/view/projections"}
+                target={"_blank"}
+              >
+                {"ESPN"}
+              </a>
+            </div>
+            <div className="text-gray-500">{`Last updated on ${mostRecentDate}`}</div>
+          </div>
+        </div>
       )}
     </div>
   );

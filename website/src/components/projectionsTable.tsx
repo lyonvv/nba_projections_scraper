@@ -1,12 +1,13 @@
-import { InitialOverUnders, InitialPicks } from "@/constants";
-import { Pick } from "@/types/picks";
 import { IDailyProjections } from "@/types/projections";
 import { TeamAbbreviation, TeamName } from "@/types/teams";
+import { InitialOverUnders, InitialPicks } from "@/constants";
+import { ParticipantPickCell } from "./participantPickCell";
 import { TeamIcon } from "./teamIcon";
+import { ColumnConfig } from "@/types/tableConfig";
+import { GenericTable } from "./genericTable";
+import { Pick } from "@/types/picks";
 
-type ProjectionsTableProps = { projections: IDailyProjections };
-
-type ProjectionsTableRow = {
+export type ProjectionsTableRow = {
   teamName: TeamName;
   teamAbbreviation: TeamAbbreviation;
   currentWins: number;
@@ -19,12 +20,13 @@ type ProjectionsTableRow = {
   lyonPick: Pick;
 };
 
+type ProjectionsTableProps = { projections: IDailyProjections };
+
 export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
   const data: ProjectionsTableRow[] = Object.entries(
     projections.projections
   ).map(([teamAbbreviation, projection]) => {
     const abbreviation = teamAbbreviation as TeamAbbreviation;
-
     return {
       teamName: projection.teamName,
       teamAbbreviation: abbreviation,
@@ -39,45 +41,100 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
     };
   });
 
+  const columns: ColumnConfig<ProjectionsTableRow>[] = [
+    {
+      label: "Team",
+      valueFunction: (row) => row.teamName,
+      sortFunction: (a, b) => a.teamName.localeCompare(b.teamName),
+      renderFunction: (row) => (
+        <div className="flex gap-5 items-center">
+          <TeamIcon team={row.teamAbbreviation} size={30} />
+          {row.teamName}
+        </div>
+      ),
+    },
+    {
+      label: "Current Record",
+      valueFunction: (row) => `${row.currentWins}-${row.currentLosses}`,
+      sortFunction: (a, b) => a.currentWins - b.currentWins,
+    },
+    {
+      label: "Projected Record",
+      valueFunction: (row) => `${row.projectedWins}-${row.projectedLosses}`,
+      sortFunction: (a, b) => a.projectedWins - b.projectedWins,
+    },
+    {
+      label: "Opening Line Wins",
+      valueFunction: (row) => row.openingLineWins,
+      sortFunction: (a, b) => a.openingLineWins - b.openingLineWins,
+    },
+    {
+      label: "Delta",
+      valueFunction: (row) => row.projectedWins - row.openingLineWins,
+      sortFunction: (a, b) =>
+        a.projectedWins -
+        a.openingLineWins -
+        (b.projectedWins - b.openingLineWins),
+      renderFunction: (row) => {
+        const roundedDelta =
+          Math.round((row.projectedWins - row.openingLineWins) * 100) / 100;
+        return (
+          <div
+            className="flex justify-center items-center"
+            style={{
+              backgroundColor: `rgb(
+                ${
+                  roundedDelta < 0 ? 255 : Math.max(0, 255 - roundedDelta * 10)
+                }, 
+                ${
+                  roundedDelta > 0 ? 255 : Math.max(0, 255 + roundedDelta * 10)
+                }, 
+                ${255 - Math.abs(roundedDelta * 10)}
+              )`,
+            }}
+          >
+            {roundedDelta > 0 ? "+" : ""}
+            {roundedDelta}
+          </div>
+        );
+      },
+    },
+    {
+      label: "Will's Pick",
+      valueFunction: (row) => row.willPick,
+      sortFunction: (a, b) => a.willPick.localeCompare(b.willPick),
+      renderFunction: (row) => (
+        <ParticipantPickCell
+          currentDelta={row.projectedWins - row.openingLineWins}
+          pick={row.willPick}
+        />
+      ),
+    },
+    {
+      label: "Owen's Pick",
+      valueFunction: (row) => row.owenPick,
+      sortFunction: (a, b) => a.owenPick.localeCompare(b.owenPick),
+      renderFunction: (row) => (
+        <ParticipantPickCell
+          currentDelta={row.projectedWins - row.openingLineWins}
+          pick={row.owenPick}
+        />
+      ),
+    },
+    {
+      label: "Lyon's Pick",
+      valueFunction: (row) => row.lyonPick,
+      sortFunction: (a, b) => a.lyonPick.localeCompare(b.lyonPick),
+      renderFunction: (row) => (
+        <ParticipantPickCell
+          currentDelta={row.projectedWins - row.openingLineWins}
+          pick={row.lyonPick}
+        />
+      ),
+    },
+  ];
+
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="text-left px-4 py-2 border-b">{"Team"}</th>
-            <th className="text-left px-4 py-2 border-b">{"Current Wins"}</th>
-            <th className="text-left px-4 py-2 border-b">{"Current Losses"}</th>
-            <th className="text-left px-4 py-2 border-b">{"Projected Wins"}</th>
-            <th className="text-left px-4 py-2 border-b">
-              {"Projected Losses"}
-            </th>
-            <th className="text-left px-4 py-2 border-b">
-              {"Opening Line Wins"}
-            </th>
-            <th className="text-left px-4 py-2 border-b">{"Will's Pick"}</th>
-            <th className="text-left px-4 py-2 border-b">{"Owen's Pick"}</th>
-            <th className="text-left px-4 py-2 border-b">{"Lyon's Pick"}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, index) => (
-            <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-              <td className="px-4 py-2 border-b">
-                <TeamIcon team={row.teamAbbreviation} />
-                {row.teamName}
-              </td>
-              <td className="px-4 py-2 border-b">{row.currentWins}</td>
-              <td className="px-4 py-2 border-b">{row.currentLosses}</td>
-              <td className="px-4 py-2 border-b">{row.projectedWins}</td>
-              <td className="px-4 py-2 border-b">{row.projectedLosses}</td>
-              <td className="px-4 py-2 border-b">{row.openingLineWins}</td>
-              <td className="px-4 py-2 border-b">{row.willPick}</td>
-              <td className="px-4 py-2 border-b">{row.owenPick}</td>
-              <td className="px-4 py-2 border-b">{row.lyonPick}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <GenericTable data={data} columns={columns} title="Current Projections" />
   );
 };
