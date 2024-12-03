@@ -39,4 +39,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 To pull the files from the volume storage (if testing locally), simply run the following from your desktop:
 
-scp -r root@138.197.81.240:/mnt/external/projections/\* ~/Source/nba_projections_scraper/website/data
+scp -r root@[IP ADDRESS]:/mnt/external/projections/\* ~/Source/nba_projections_scraper/website/data

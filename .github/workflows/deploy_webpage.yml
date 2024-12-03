@@ -1,0 +1,58 @@
+name: Deploy Next.js to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 18 * * *" # 1 PM EST (18:00 UTC) every day
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install SSH client
+        run: sudo apt-get install openssh-client
+
+      - name: Add SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.DROPLET_HOST_KEY }}
+
+      - name: Copy data files from DigitalOcean
+        run: |
+          # Create a directory to store data files
+          mkdir -p ./website/data
+
+          # Use SCP to securely copy files from the droplet
+          # Replace '/path/to/source/files/' with the actual path to your data files on the droplet
+          scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/ ./website/data/
+
+          # List copied files to verify (optional)
+          ls -R ./data
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16" # Use the desired Node.js version
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build and export Next.js app
+        run: |
+          npm run build
+          npm run export  # This creates the static files in the 'out' directory
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages # The branch where the site will be deployed
+          folder: out # The folder with the static files (by default `out`)
+          token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
