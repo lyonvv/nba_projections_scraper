@@ -1,5 +1,4 @@
-name: Deploy Next.js to GitHub Pages
-
+name: Deploy Next.js
 on:
   push:
     branches:
@@ -52,4 +51,4 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           cd website
-          npx vercel --prod --token $VERCEL_TOKEN
+          npx vercel --prod --yes --token $VERCEL_TOKEN
