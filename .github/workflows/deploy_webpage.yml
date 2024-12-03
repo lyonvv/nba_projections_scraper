@@ -68,6 +68,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages # The branch where the site will be deployed
-          folder: out # The folder with the static files (by default `out`)
+          folder: website/out # The folder with the static files (by default `out`)
           token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
