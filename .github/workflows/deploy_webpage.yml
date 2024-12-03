@@ -44,7 +44,7 @@ jobs:
       - name: Build and export Next.js app
         run: |
           cd website
-          npm run build
+          npx vercel build
 
       - name: Deploy to Vercel
         env:
