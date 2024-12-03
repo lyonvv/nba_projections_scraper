@@ -244,7 +244,7 @@ export const InitialPicks: AllPicks = {
   UTA: {
     Owen: "Under",
     Will: "Under",
-    Lyon: "Under",
+    Lyon: "Over",
   },
   WAS: {
     Owen: "Under",

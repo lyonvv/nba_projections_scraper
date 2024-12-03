@@ -2,11 +2,13 @@ import { InitialOverUnders, InitialPicks } from "@/constants";
 import { Pick } from "@/types/picks";
 import { IDailyProjections } from "@/types/projections";
 import { TeamAbbreviation, TeamName } from "@/types/teams";
+import { TeamIcon } from "./teamIcon";
 
 type ProjectionsTableProps = { projections: IDailyProjections };
 
 type ProjectionsTableRow = {
   teamName: TeamName;
+  teamAbbreviation: TeamAbbreviation;
   currentWins: number;
   currentLosses: number;
   projectedWins: number;
@@ -25,6 +27,7 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
 
     return {
       teamName: projection.teamName,
+      teamAbbreviation: abbreviation,
       currentWins: projection.currentWins,
       currentLosses: projection.currentLosses,
       projectedWins: projection.projectedWins,
@@ -59,7 +62,10 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
         <tbody>
           {data.map((row, index) => (
             <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
-              <td className="px-4 py-2 border-b">{row.teamName}</td>
+              <td className="px-4 py-2 border-b">
+                <TeamIcon team={row.teamAbbreviation} />
+                {row.teamName}
+              </td>
               <td className="px-4 py-2 border-b">{row.currentWins}</td>
               <td className="px-4 py-2 border-b">{row.currentLosses}</td>
               <td className="px-4 py-2 border-b">{row.projectedWins}</td>

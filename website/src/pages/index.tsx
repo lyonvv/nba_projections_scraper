@@ -1,11 +1,10 @@
-import { GetStaticProps } from "next";
 import path from "path";
 import fs from "fs";
 import { parse } from "csv-parse/sync";
 import { IDailyProjections, IProjectionDataRow } from "@/types/projections";
 import { convertCSVRowsToDailyProjections } from "@/utils/utils";
-import { TeamIcon } from "@/components/teamIcon";
 import { ProjectionsTable } from "@/components/projectionsTable";
+import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps<{
   csvData: IDailyProjections[];
