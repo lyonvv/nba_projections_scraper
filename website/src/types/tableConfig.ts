@@ -9,4 +9,6 @@ export type ColumnConfig<T> = {
   label: string;
   sortFunction?: (a: T, b: T) => number;
   renderFunction?: (row: T) => JSX.Element;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };

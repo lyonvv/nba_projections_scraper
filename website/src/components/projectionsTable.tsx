@@ -6,6 +6,7 @@ import { TeamIcon } from "./teamIcon";
 import { ColumnConfig } from "@/types/tableConfig";
 import { GenericTable } from "./genericTable";
 import { Pick } from "@/types/picks";
+import { MobileTeamStatusCell } from "./mobileTeamStatusCell";
 
 export type ProjectionsTableRow = {
   teamName: TeamName;
@@ -51,7 +52,7 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
       renderFunction: (row) => (
         <div className="flex gap-5 items-center">
           <TeamIcon team={row.teamAbbreviation} size={30} />
-          {row.teamName}
+          <span className="hidden sm:block"> {row.teamName}</span>
         </div>
       ),
     },
@@ -59,16 +60,29 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
       label: "Current Record",
       valueFunction: (row) => `${row.currentWins}-${row.currentLosses}`,
       sortFunction: (a, b) => a.currentWins - b.currentWins,
+      hideOnMobile: true,
     },
     {
       label: "Projected Record",
       valueFunction: (row) => `${row.projectedWins}-${row.projectedLosses}`,
       sortFunction: (a, b) => a.projectedWins - b.projectedWins,
+      hideOnMobile: true,
     },
     {
       label: "Opening Line Wins",
       valueFunction: (row) => row.openingLineWins,
       sortFunction: (a, b) => a.openingLineWins - b.openingLineWins,
+      hideOnMobile: true,
+    },
+    {
+      label: "Status",
+      valueFunction: (row) => row.projectedWins - row.openingLineWins,
+      sortFunction: (a, b) =>
+        a.projectedWins -
+        a.openingLineWins -
+        (b.projectedWins - b.openingLineWins),
+      renderFunction: (row) => <MobileTeamStatusCell rowData={row} />,
+      hideOnDesktop: true,
     },
     {
       label: "Delta",
@@ -100,6 +114,7 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
           </div>
         );
       },
+      hideOnMobile: true,
     },
     {
       label: "Paul's Pick",
@@ -111,6 +126,7 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
           pick={row.paulPick}
         />
       ),
+      hideOnMobile: true,
     },
     {
       label: "Will's Pick",
@@ -122,6 +138,7 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
           pick={row.willPick}
         />
       ),
+      hideOnMobile: true,
     },
     {
       label: "Owen's Pick",
@@ -133,6 +150,7 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
           pick={row.owenPick}
         />
       ),
+      hideOnMobile: true,
     },
     {
       label: "Lyon's Pick",
@@ -143,6 +161,44 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
           currentDelta={row.projectedWins - row.openingLineWins}
           pick={row.lyonPick}
         />
+      ),
+      hideOnMobile: true,
+    },
+    {
+      label: "Picks",
+      valueFunction: (row) => row.projectedWins,
+      hideOnDesktop: true,
+      renderFunction: (row) => (
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-between gap-1">
+            <div>Paul</div>
+            <ParticipantPickCell
+              currentDelta={row.projectedWins - row.openingLineWins}
+              pick={row.paulPick}
+            />
+          </div>
+          <div className="flex justify-between gap-1">
+            <div>Will</div>
+            <ParticipantPickCell
+              currentDelta={row.projectedWins - row.openingLineWins}
+              pick={row.willPick}
+            />
+          </div>
+          <div className="flex justify-between gap-1">
+            <div>Owen</div>
+            <ParticipantPickCell
+              currentDelta={row.projectedWins - row.openingLineWins}
+              pick={row.owenPick}
+            />
+          </div>
+          <div className="flex justify-between gap-1">
+            <div>Lyon</div>
+            <ParticipantPickCell
+              currentDelta={row.projectedWins - row.openingLineWins}
+              pick={row.lyonPick}
+            />
+          </div>
+        </div>
       ),
     },
   ];

@@ -49,12 +49,12 @@ const Home = ({ csvData }: HomeProps) => {
     : null;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full space-y-8 p-6">
+    <div className="flex flex-col items-center justify-center space-y-8 p-6 w-full">
       <h1 className="text-4xl font-bold text-gray-800 tracking-wide">
         2024 NBA Pick Em
       </h1>
       {latestProjections && (
-        <div className="space-y-6">
+        <div className="flex flex-col w-full space-y-6">
           <CurrentStandings
             standings={getCurrentStandings(latestProjections)}
           />
