@@ -50,7 +50,7 @@ def fetch_and_save_schedule():
         csv_file_path = os.path.join(schedule_dir, csv_file_name)
         does_file_exist = os.path.exists(csv_file_path)
 
-        if (does_file_exist and not (is_current_month or is_within_proximity)):
+        if (does_file_exist and (is_current_month or is_within_proximity)):
             print(f"File '{csv_file_name}' already exists or does not need updating. Skipping creation.")
             continue
 
