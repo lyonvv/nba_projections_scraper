@@ -6,4 +6,12 @@ def get_projections_storage_directory():
     else:
         print("Volume not mounted at /mnt/external. Saving to the regular project directory instead.")
         # Fallback to the regular project directory if the volume is not mounted
-        return "written_data"
+        return "written_data/projections"
+
+def get_schedule_storage_directory():
+    if os.path.exists("/mnt/external"):
+        return "/mnt/external/schedule"
+    else:
+        print("Volume not mounted at /mnt/external. Saving to the regular project directory instead.")
+        # Fallback to the regular project directory if the volume is not mounted
+        return "written_data/schedule"

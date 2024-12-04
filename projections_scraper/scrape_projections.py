@@ -3,7 +3,6 @@ from datetime import date, datetime
 import os
 import pytz
 import requests
-from bs4 import BeautifulSoup
 from constants import TEAM_FULL_NAMES
 from parse_html import parse_team_projections_from_html
 from parse_over_under_data import get_over_under_picks, get_team_over_unders
