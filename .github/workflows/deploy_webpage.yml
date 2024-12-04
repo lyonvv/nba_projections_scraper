@@ -20,17 +20,6 @@ jobs:
           key: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.DROPLET_HOST_KEY }}
 
-      - name: Copy data files from DigitalOcean
-        run: |
-          # Create a directory to store data files
-          mkdir -p ./website/data
-
-          # Use SCP to securely copy files from the droplet
-          # Replace '/path/to/source/files/' with the actual path to your data files on the droplet
-          scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/* ./website/data/
-
-          ls -l ./website/data
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -41,11 +30,18 @@ jobs:
           cd website
           npm install
 
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - name: Build
         run: |
           cd website
-          npx vercel pull --token $VERCEL_TOKEN --yes
-          npx vercel build --prod
-          npx vercel --prod --yes --prebuilt --token $VERCEL_TOKEN
+          npm run build
+
+      - name: Upload static files to DigitalOcean
+        run: |
+          # Use SCP to securely copy the static files to the droplet
+          scp -r ./website/out/* root@${{ secrets.DROPLET_IP }}:/var/www/nextjs-app/
+
+      - name: Restart Nginx (if needed)
+        run: |
+          ssh root@${{ secrets.DROPLET_IP }} << 'EOF'
+          systemctl restart nginx
+          EOF

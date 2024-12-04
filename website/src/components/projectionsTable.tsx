@@ -18,6 +18,7 @@ export type ProjectionsTableRow = {
   willPick: Pick;
   owenPick: Pick;
   lyonPick: Pick;
+  paulPick: Pick;
 };
 
 type ProjectionsTableProps = { projections: IDailyProjections };
@@ -38,6 +39,7 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
       willPick: InitialPicks[abbreviation].Will,
       owenPick: InitialPicks[abbreviation].Owen,
       lyonPick: InitialPicks[abbreviation].Lyon,
+      paulPick: InitialPicks[abbreviation].Paul,
     };
   });
 
@@ -98,6 +100,17 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
           </div>
         );
       },
+    },
+    {
+      label: "Paul's Pick",
+      valueFunction: (row) => row.paulPick,
+      sortFunction: (a, b) => a.paulPick.localeCompare(b.paulPick),
+      renderFunction: (row) => (
+        <ParticipantPickCell
+          currentDelta={row.projectedWins - row.openingLineWins}
+          pick={row.paulPick}
+        />
+      ),
     },
     {
       label: "Will's Pick",

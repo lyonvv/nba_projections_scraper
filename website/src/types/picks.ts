@@ -1,6 +1,6 @@
 import { TeamAbbreviation } from "./teams";
 
-export type Participant = "Owen" | "Will" | "Lyon";
+export type Participant = "Owen" | "Will" | "Lyon" | "Paul";
 
 export type Pick = "Over" | "Under";
 

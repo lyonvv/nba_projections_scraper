@@ -86,6 +86,8 @@ export const getCurrentStandings = (
 
       const lyonDelta = getDistanceFromLine(currentDelta, initialPicks.Lyon);
 
+      const paulDelta = getDistanceFromLine(currentDelta, initialPicks.Paul);
+
       if (willDelta === 0) {
         acc.Will.countPush++;
       } else if (willDelta > 0) {
@@ -116,6 +118,16 @@ export const getCurrentStandings = (
         acc.Lyon.incorrectDistanceFromLine += lyonDelta;
       }
 
+      if (paulDelta === 0) {
+        acc.Paul.countPush++;
+      } else if (paulDelta > 0) {
+        acc.Paul.countCorrect++;
+        acc.Paul.correctDistanceFromLine += paulDelta;
+      } else {
+        acc.Paul.countIncorrect++;
+        acc.Paul.incorrectDistanceFromLine += paulDelta;
+      }
+
       return acc;
     },
     {
@@ -134,6 +146,13 @@ export const getCurrentStandings = (
         incorrectDistanceFromLine: 0,
       } as IndividualStandings,
       Lyon: {
+        countCorrect: 0,
+        countIncorrect: 0,
+        countPush: 0,
+        correctDistanceFromLine: 0,
+        incorrectDistanceFromLine: 0,
+      } as IndividualStandings,
+      Paul: {
         countCorrect: 0,
         countIncorrect: 0,
         countPush: 0,
