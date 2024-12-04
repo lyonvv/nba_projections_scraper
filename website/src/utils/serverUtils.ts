@@ -59,7 +59,7 @@ export const convertCSVRowsToDailyProjections = (
 export const convertCSVRowsToSchedule = (rows: IScheduleDataRow[]): IGame[] => {
   return rows.map((row) => {
     return {
-      date: new Date(row.date_time_est),
+      date: row.date_time_est,
       visitor: TeamAbbreviationLookup[row.visitor_team as TeamName],
       visitorScore: row.visitor_score,
       home: TeamAbbreviationLookup[row.home_team as TeamName],

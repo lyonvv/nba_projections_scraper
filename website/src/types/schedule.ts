@@ -14,7 +14,7 @@ export interface IScheduleDataRow {
 }
 
 export interface IGame {
-  date: Date;
+  date: string;
   visitor: TeamAbbreviation;
   visitorScore: number;
   home: TeamAbbreviation;
