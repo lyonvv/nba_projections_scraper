@@ -7,6 +7,7 @@ import { ColumnConfig } from "@/types/tableConfig";
 import { GenericTable } from "./genericTable";
 import { Pick } from "@/types/picks";
 import { MobileTeamStatusCell } from "./mobileTeamStatusCell";
+import Link from "next/link";
 
 export type ProjectionsTableRow = {
   teamName: TeamName;
@@ -50,10 +51,13 @@ export const ProjectionsTable = ({ projections }: ProjectionsTableProps) => {
       valueFunction: (row) => row.teamName,
       sortFunction: (a, b) => a.teamName.localeCompare(b.teamName),
       renderFunction: (row) => (
-        <div className="flex gap-5 items-center">
+        <Link
+          className="flex gap-5 items-center"
+          href={`teams/${row.teamAbbreviation}`}
+        >
           <TeamIcon team={row.teamAbbreviation} size={30} />
           <span className="hidden sm:block"> {row.teamName}</span>
-        </div>
+        </Link>
       ),
     },
     {

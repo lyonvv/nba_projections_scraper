@@ -1,63 +1,69 @@
-export type TeamAbbreviation =
-  | "ATL"
-  | "BOS"
-  | "BKN"
-  | "CHA"
-  | "CHI"
-  | "CLE"
-  | "DAL"
-  | "DEN"
-  | "DET"
-  | "GSW"
-  | "HOU"
-  | "IND"
-  | "LAC"
-  | "LAL"
-  | "MEM"
-  | "MIA"
-  | "MIL"
-  | "MIN"
-  | "NOP"
-  | "NYK"
-  | "OKC"
-  | "ORL"
-  | "PHI"
-  | "PHX"
-  | "POR"
-  | "SAC"
-  | "SAS"
-  | "TOR"
-  | "UTA"
-  | "WAS";
+export const TeamAbbreviations = [
+  "ATL",
+  "BOS",
+  "BKN",
+  "CHA",
+  "CHI",
+  "CLE",
+  "DAL",
+  "DEN",
+  "DET",
+  "GSW",
+  "HOU",
+  "IND",
+  "LAC",
+  "LAL",
+  "MEM",
+  "MIA",
+  "MIL",
+  "MIN",
+  "NOP",
+  "NYK",
+  "OKC",
+  "ORL",
+  "PHI",
+  "PHX",
+  "POR",
+  "SAC",
+  "SAS",
+  "TOR",
+  "UTA",
+  "WAS",
+] as const;
 
-export type TeamName =
-  | "Atlanta Hawks"
-  | "Boston Celtics"
-  | "Brooklyn Nets"
-  | "Charlotte Hornets"
-  | "Chicago Bulls"
-  | "Cleveland Cavaliers"
-  | "Dallas Mavericks"
-  | "Denver Nuggets"
-  | "Detroit Pistons"
-  | "Golden State Warriors"
-  | "Houston Rockets"
-  | "Indiana Pacers"
-  | "LA Clippers"
-  | "Los Angeles Lakers"
-  | "Memphis Grizzlies"
-  | "Miami Heat"
-  | "Milwaukee Bucks"
-  | "Minnesota Timberwolves"
-  | "New Orleans Pelicans"
-  | "New York Knicks"
-  | "Oklahoma City Thunder"
-  | "Orlando Magic"
-  | "Philadelphia 76ers"
-  | "Phoenix Suns"
-  | "Portland Trail Blazers"
-  | "Sacramento Kings"
-  | "San Antonio Spurs"
-  | "Toronto Raptors"
-  | "Utah Jazz"
-  | "Washington Wizards";
+export type TeamAbbreviation = (typeof TeamAbbreviations)[number];
+
+export const TeamNames = [
+  "Atlanta Hawks",
+  "Boston Celtics",
+  "Brooklyn Nets",
+  "Charlotte Hornets",
+  "Chicago Bulls",
+  "Cleveland Cavaliers",
+  "Dallas Mavericks",
+  "Denver Nuggets",
+  "Detroit Pistons",
+  "Golden State Warriors",
+  "Houston Rockets",
+  "Indiana Pacers",
+  "LA Clippers",
+  "Los Angeles Lakers",
+  "Memphis Grizzlies",
+  "Miami Heat",
+  "Milwaukee Bucks",
+  "Minnesota Timberwolves",
+  "New Orleans Pelicans",
+  "New York Knicks",
+  "Oklahoma City Thunder",
+  "Orlando Magic",
+  "Philadelphia 76ers",
+  "Phoenix Suns",
+  "Portland Trail Blazers",
+  "Sacramento Kings",
+  "San Antonio Spurs",
+  "Toronto Raptors",
+  "Utah Jazz",
+  "Washington Wizards",
+] as const;
+
+export type TeamName = (typeof TeamNames)[number];

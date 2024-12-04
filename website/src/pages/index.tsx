@@ -1,33 +1,14 @@
-import path from "path";
-import fs from "fs";
-import { parse } from "csv-parse/sync";
-import { IDailyProjections, IProjectionDataRow } from "@/types/projections";
-import {
-  convertCSVRowsToDailyProjections,
-  getCurrentStandings,
-} from "@/utils/utils";
+import { IDailyProjections } from "@/types/projections";
+import { getCurrentStandings } from "@/utils/utils";
 import { ProjectionsTable } from "@/components/projectionsTable";
 import { GetStaticProps } from "next";
 import { CurrentStandings } from "@/components/currentStandings";
+import { getStaticDataFromCsvs } from "@/utils/serverUtils";
 
 export const getStaticProps: GetStaticProps<{
   csvData: IDailyProjections[];
 }> = async () => {
-  const dataFolder = path.join(process.cwd(), "data");
-
-  const files = fs.readdirSync(dataFolder);
-
-  const parsedData: IProjectionDataRow[] = files
-    .filter((file) => file.endsWith(".csv"))
-    .map((file) => {
-      const filePath = path.join(dataFolder, file);
-      const content = fs.readFileSync(filePath, "utf8");
-
-      return parse(content, { columns: true }) as IProjectionDataRow[];
-    })
-    .flatMap((data) => data);
-
-  const convertedData = convertCSVRowsToDailyProjections(parsedData);
+  const convertedData = getStaticDataFromCsvs();
 
   return {
     props: {
@@ -49,7 +30,7 @@ const Home = ({ csvData }: HomeProps) => {
     : null;
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-8 p-6 w-full">
+    <div className="flex flex-col items-center justify-center space-y-8 p-6">
       <h1 className="text-4xl font-bold text-gray-800 tracking-wide">
         2024 NBA Pick Em
       </h1>
