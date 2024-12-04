@@ -14,7 +14,7 @@ export const ParticipantPickCell = ({
 
   return (
     <div
-      className="flex justify-center items-center"
+      className="flex justify-center items-center px-1"
       style={{
         backgroundColor: `rgb(
         ${

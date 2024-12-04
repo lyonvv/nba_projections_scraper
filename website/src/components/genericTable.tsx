@@ -33,7 +33,7 @@ export function GenericTable<T>({
     <div className={"flex flex-col w-full"}>
       {title && <h1 className="text-2xl font-bold">{title}</h1>}
       <div>
-        <table className="bg-white border border-gray-200 w-full">
+        <table className="bg-white border border-gray-200">
           <thead>
             <tr className="bg-gray-100">
               {columns.map((column, index) => (
@@ -43,26 +43,30 @@ export function GenericTable<T>({
                     column.hideOnMobile ? "hidden sm:table-cell" : ""
                   } ${column.hideOnDesktop ? "table-cell sm:hidden" : ""}`}
                 >
-                  <button
-                    className="cursor-pointer"
-                    onClick={() =>
-                      setSortConfig({
-                        columnIndex: index,
-                        direction:
-                          sortConfig?.columnIndex === index &&
-                          sortConfig.direction === "desc"
-                            ? "asc"
-                            : "desc",
-                      })
-                    }
-                  >
-                    {column.label}
-                    {sortConfig?.columnIndex === index && (
-                      <span>
-                        {sortConfig.direction === "asc" ? "🔼" : "🔽"}
-                      </span>
-                    )}
-                  </button>
+                  {column.sortFunction ? (
+                    <button
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setSortConfig({
+                          columnIndex: index,
+                          direction:
+                            sortConfig?.columnIndex === index &&
+                            sortConfig.direction === "desc"
+                              ? "asc"
+                              : "desc",
+                        })
+                      }
+                    >
+                      {column.label}
+                      {sortConfig?.columnIndex === index && (
+                        <span>
+                          {sortConfig.direction === "asc" ? "🔼" : "🔽"}
+                        </span>
+                      )}
+                    </button>
+                  ) : (
+                    <span>{column.label}</span>
+                  )}
                 </th>
               ))}
             </tr>

@@ -17,7 +17,7 @@ export const MobileTeamStatusCell = ({
         <span>{`${rowData.currentWins}-${rowData.currentLosses}`}</span>
       </div>
       <div className="flex justify-between w-full gap-1">
-        <span>Opening Line:</span>
+        <span>Line:</span>
         <span>{`${rowData.openingLineWins}`}</span>
       </div>
       <div className="flex justify-between w-full gap-1">
@@ -27,7 +27,7 @@ export const MobileTeamStatusCell = ({
       <div className="flex justify-between w-full gap-1">
         <span>Delta:</span>
         <div
-          className="flex justify-center items-center"
+          className="flex justify-center items-center px-1"
           style={{
             backgroundColor: `rgb(
           ${roundedDelta < 0 ? 255 : Math.max(0, 255 - roundedDelta * 10)}, 
