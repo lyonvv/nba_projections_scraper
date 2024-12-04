@@ -23,11 +23,13 @@ jobs:
       - name: Copy data files from DigitalOcean
         run: |
           # Create a directory to store data files
-          mkdir -p ./website/data
+          mkdir -p ./website/data/projections
+          mkdir -p ./website/data/schedule
 
           # Use SCP to securely copy files from the droplet
           # Replace '/path/to/source/files/' with the actual path to your data files on the droplet
-          scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/* ./website/data/
+          scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/projections/* ./website/data/projections/
+          scp -r root@${{ secrets.DROPLET_IP }}:/mnt/external/schedule/* ./website/data/schedule/
 
           ls -l ./website/data
 

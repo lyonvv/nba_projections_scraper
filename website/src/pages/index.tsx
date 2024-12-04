@@ -6,24 +6,26 @@ import { CurrentStandings } from "@/components/currentStandings";
 import { getStaticDataFromCsvs } from "@/utils/serverUtils";
 
 export const getStaticProps: GetStaticProps<{
-  csvData: IDailyProjections[];
+  projectionsData: IDailyProjections[];
 }> = async () => {
-  const convertedData = getStaticDataFromCsvs();
+  const { projectionsData } = getStaticDataFromCsvs();
 
   return {
     props: {
-      csvData: convertedData,
+      projectionsData: projectionsData,
     },
   };
 };
 
 interface HomeProps {
-  csvData: IDailyProjections[];
+  projectionsData: IDailyProjections[];
 }
 
-const Home = ({ csvData }: HomeProps) => {
+const Home = ({ projectionsData }: HomeProps) => {
   const latestProjections =
-    csvData.length > 0 ? csvData[csvData.length - 1] : null;
+    projectionsData.length > 0
+      ? projectionsData[projectionsData.length - 1]
+      : null;
 
   const mostRecentDate = latestProjections
     ? new Date(latestProjections?.dateRetrieved).toDateString()
@@ -31,9 +33,6 @@ const Home = ({ csvData }: HomeProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center space-y-8 p-6">
-      <h1 className="text-4xl font-bold text-gray-800 tracking-wide">
-        2024 NBA Pick Em
-      </h1>
       {latestProjections && (
         <div className="flex flex-col w-full space-y-6">
           <CurrentStandings

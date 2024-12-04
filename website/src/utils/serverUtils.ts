@@ -8,6 +8,7 @@ import { TeamAbbreviation, TeamName } from "@/types/teams";
 import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
+import { IGame, IScheduleDataRow } from "@/types/schedule";
 
 export const convertCSVRowsToDailyProjections = (
   rows: IProjectionDataRow[]
@@ -55,12 +56,32 @@ export const convertCSVRowsToDailyProjections = (
     .sort((a, b) => a.dateRetrieved.localeCompare(b.dateRetrieved));
 };
 
+export const convertCSVRowsToSchedule = (rows: IScheduleDataRow[]): IGame[] => {
+  return rows.map((row) => {
+    return {
+      date: new Date(row.date_time_est),
+      visitor: TeamAbbreviationLookup[row.visitor_team as TeamName],
+      visitorScore: row.visitor_score,
+      home: TeamAbbreviationLookup[row.home_team as TeamName],
+      homeScore: row.home_score,
+      boxScoreLink: row.box_score_link,
+      overtime: row.overtime === "OT",
+      attendance: row.attendance,
+      gameDuration: row.game_duration,
+      arena: row.arena,
+    };
+  });
+};
+
 export const getStaticDataFromCsvs = () => {
   const dataFolder = path.join(process.cwd(), "data");
 
-  const files = fs.readdirSync(dataFolder);
+  const projectionsFolder = path.join(dataFolder, "projections");
+  const scheduleFolder = path.join(dataFolder, "schedule");
 
-  const parsedData: IProjectionDataRow[] = files
+  const projectionsFiles = fs.readdirSync(projectionsFolder);
+
+  const parsedProjectionData: IProjectionDataRow[] = projectionsFiles
     .filter((file) => file.endsWith(".csv"))
     .map((file) => {
       const filePath = path.join(dataFolder, file);
@@ -70,7 +91,25 @@ export const getStaticDataFromCsvs = () => {
     })
     .flatMap((data) => data);
 
-  const convertedData = convertCSVRowsToDailyProjections(parsedData);
+  const convertedProjectionData =
+    convertCSVRowsToDailyProjections(parsedProjectionData);
 
-  return convertedData;
+  const scheduleFiles = fs.readdirSync(scheduleFolder);
+
+  const parsedScheduleData: IScheduleDataRow[] = scheduleFiles
+    .filter((file) => file.endsWith(".csv"))
+    .map((file) => {
+      const filePath = path.join(dataFolder, file);
+      const content = fs.readFileSync(filePath, "utf8");
+
+      return parse(content, { columns: true }) as IScheduleDataRow[];
+    })
+    .flatMap((data) => data);
+
+  const convertedScheduleData = convertCSVRowsToSchedule(parsedScheduleData);
+
+  return {
+    projectionsData: convertedProjectionData,
+    scheduleData: convertedScheduleData,
+  };
 };

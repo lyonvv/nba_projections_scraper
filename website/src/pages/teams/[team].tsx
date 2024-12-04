@@ -6,6 +6,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { IDailyProjections } from "@/types/projections";
 import { getStaticDataFromCsvs } from "@/utils/serverUtils";
 import { TeamAbbreviations } from "@/types/teams";
+import { IGame } from "@/types/schedule";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = TeamAbbreviations.map((team) => ({
@@ -19,22 +20,25 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<{
-  csvData: IDailyProjections[];
+  projections: IDailyProjections[];
+  scheduleData: IGame[];
 }> = async () => {
-  const convertedData = getStaticDataFromCsvs();
+  const { projectionsData, scheduleData } = getStaticDataFromCsvs();
 
   return {
     props: {
-      csvData: convertedData,
+      projections: projectionsData,
+      scheduleData: scheduleData,
     },
   };
 };
 
 interface TeamPageProps {
-  csvData: IDailyProjections[];
+  projections: IDailyProjections[];
+  scheduleData: IGame[];
 }
 
-export const TeamPage = ({ csvData }: TeamPageProps) => {
+export const TeamPage = ({ projections, scheduleData }: TeamPageProps) => {
   const router = useRouter();
   const { team } = router.query;
 
@@ -50,7 +54,8 @@ export const TeamPage = ({ csvData }: TeamPageProps) => {
         <button>Back</button>
       </Link>
       <h1>Team: {team}</h1>
-      <div>{csvData.length}</div>
+      <div>{projections.length}</div>
+      <div>{scheduleData.length}</div>
     </div>
   );
 };
