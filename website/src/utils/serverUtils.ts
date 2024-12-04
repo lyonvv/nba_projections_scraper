@@ -84,7 +84,7 @@ export const getStaticDataFromCsvs = () => {
   const parsedProjectionData: IProjectionDataRow[] = projectionsFiles
     .filter((file) => file.endsWith(".csv"))
     .map((file) => {
-      const filePath = path.join(dataFolder, file);
+      const filePath = path.join(projectionsFolder, file);
       const content = fs.readFileSync(filePath, "utf8");
 
       return parse(content, { columns: true }) as IProjectionDataRow[];
@@ -99,7 +99,7 @@ export const getStaticDataFromCsvs = () => {
   const parsedScheduleData: IScheduleDataRow[] = scheduleFiles
     .filter((file) => file.endsWith(".csv"))
     .map((file) => {
-      const filePath = path.join(dataFolder, file);
+      const filePath = path.join(scheduleFolder, file);
       const content = fs.readFileSync(filePath, "utf8");
 
       return parse(content, { columns: true }) as IScheduleDataRow[];
