@@ -282,3 +282,7 @@ export const InitialPicks: AllPicks = {
     Paul: "Under",
   },
 };
+
+export const SEASON_START_DATE = new Date("2024-10-22");
+
+export const SEASON_END_DATE = new Date("2025-04-13");

@@ -8,7 +8,7 @@ import { TeamAbbreviation, TeamName } from "@/types/teams";
 import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
-import { IGame, IScheduleDataRow } from "@/types/schedule";
+import { IScheduleDataRow, ITeamSchedules } from "@/types/schedule";
 
 export const convertCSVRowsToDailyProjections = (
   rows: IProjectionDataRow[]
@@ -56,8 +56,10 @@ export const convertCSVRowsToDailyProjections = (
     .sort((a, b) => a.dateRetrieved.localeCompare(b.dateRetrieved));
 };
 
-export const convertCSVRowsToSchedule = (rows: IScheduleDataRow[]): IGame[] => {
-  return rows.map((row) => {
+export const convertCSVRowsToSchedule = (
+  rows: IScheduleDataRow[]
+): ITeamSchedules => {
+  const allGames = rows.map((row) => {
     return {
       date: row.date_time_est,
       visitor: TeamAbbreviationLookup[row.visitor_team as TeamName],
@@ -71,6 +73,20 @@ export const convertCSVRowsToSchedule = (rows: IScheduleDataRow[]): IGame[] => {
       arena: row.arena,
     };
   });
+
+  return allGames.reduce((acc, game) => {
+    if (!acc[game.visitor]) {
+      acc[game.visitor] = [];
+    }
+    if (!acc[game.home]) {
+      acc[game.home] = [];
+    }
+
+    acc[game.visitor].push(game);
+    acc[game.home].push(game);
+
+    return acc;
+  }, {} as ITeamSchedules);
 };
 
 export const getStaticDataFromCsvs = () => {

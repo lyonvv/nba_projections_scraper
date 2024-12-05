@@ -5,8 +5,9 @@ import { isValidTeamAbbreviation } from "@/utils/utils";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { IDailyProjections } from "@/types/projections";
 import { getStaticDataFromCsvs } from "@/utils/serverUtils";
-import { TeamAbbreviations } from "@/types/teams";
-import { IGame } from "@/types/schedule";
+import { TeamAbbreviation, TeamAbbreviations } from "@/types/teams";
+import { ITeamSchedules } from "@/types/schedule";
+import { TeamChart } from "@/components/teamChart";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = TeamAbbreviations.map((team) => ({
@@ -21,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<{
   projections: IDailyProjections[];
-  scheduleData: IGame[];
+  scheduleData: ITeamSchedules;
 }> = async () => {
   const { projectionsData, scheduleData } = getStaticDataFromCsvs();
 
@@ -35,7 +36,7 @@ export const getStaticProps: GetStaticProps<{
 
 interface TeamPageProps {
   projections: IDailyProjections[];
-  scheduleData: IGame[];
+  scheduleData: ITeamSchedules;
 }
 
 export const TeamPage = ({ projections, scheduleData }: TeamPageProps) => {
@@ -48,6 +49,10 @@ export const TeamPage = ({ projections, scheduleData }: TeamPageProps) => {
     }
   }, [router, team]);
 
+  const teamAbbreviation = team as TeamAbbreviation;
+
+  const games = scheduleData[teamAbbreviation];
+
   return (
     <div>
       <Link href="/">
@@ -55,7 +60,8 @@ export const TeamPage = ({ projections, scheduleData }: TeamPageProps) => {
       </Link>
       <h1>Team: {team}</h1>
       <div>{projections.length}</div>
-      <div>{scheduleData.length}</div>
+      <div>{games.length}</div>
+      <TeamChart team={teamAbbreviation} projections={projections} />
     </div>
   );
 };

@@ -25,3 +25,7 @@ export interface IGame {
   gameDuration: string;
   arena: string;
 }
+
+export type ITeamSchedules = {
+  [team in TeamAbbreviation]: IGame[];
+};
